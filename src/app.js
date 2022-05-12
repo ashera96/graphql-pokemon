@@ -8,6 +8,11 @@ import schema from './schema';
 const app = new Koa();
 
 app
+  .use(async (ctx, next) => {
+    ctx.set('Connection', 'keep-alive');
+    ctx.set('Keep-Alive', 'timeout=1500');
+    await next();
+  })
   .use(convert(cors()))
   .use(convert(graphqlHTTP(async () => ({
     graphiql: true,
